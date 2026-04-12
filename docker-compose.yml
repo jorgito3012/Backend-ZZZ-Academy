@@ -1,16 +1,18 @@
+version: '3.8'
+
 services:
-  db:
-    image: postgres:15-alpine
-    container_name: zenless_academy_db
-    restart: always
+  postgres-zzz:
+    image: postgres:15
+    container_name: zzz_academy_db
     environment:
+      POSTGRES_DB: zenless_db
       POSTGRES_USER: admin_zenless
       POSTGRES_PASSWORD: academy_password_123
-      POSTGRES_DB: zenless_db
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - pgdata_zzz:/var/lib/postgresql/data
+    restart: unless-stopped
 
 volumes:
-  postgres_data:
+  pgdata_zzz:

@@ -3,6 +3,8 @@ package com.zzzacademy.backend.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Map;
+import org.hibernate.annotations.Type;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 import com.zzzacademy.backend.model.json.DetalleDiscoUsuario;
 
@@ -32,6 +34,7 @@ public class UsuarioBuild {
     private Integer wEngineNivel = 1;
 
     // Mapeo JSONB: Llave (Integer) es la posición del disco del 1 al 6. Valor (DetalleDisco)
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<Integer, DetalleDiscoUsuario> discosEquipados;
 

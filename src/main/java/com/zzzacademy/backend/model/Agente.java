@@ -3,6 +3,8 @@ package com.zzzacademy.backend.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Map;
+import org.hibernate.annotations.Type;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 import com.zzzacademy.backend.model.enums.Elemento;
 import com.zzzacademy.backend.model.enums.Rango;
@@ -39,14 +41,17 @@ public class Agente {
     // ==========================================
 
     // Usamos Map<String, Double> porque todas las stats son números (ej: "hp": 7500.5, "crit_rate": 24.4)
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, Double> estadisticasLvl60;
 
     // Usamos Map<String, Object> porque las habilidades tienen más JSONs dentro (core, basic, special...)
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> habilidades;
 
     // Usamos Map<String, String> porque son 6 textos (ej: "mindscape1": "Descripción del dupe...")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, String> mindscapes;
 
