@@ -1,0 +1,64 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.zzzacademy:backend >-----------------------
+[INFO] Building backend 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.5.0:clean (default-clean) @ backend ---
+[INFO] Deleting C:\Users\jorge\Desktop\tfg\java\backend\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ backend ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ backend ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 19 source files with javac [debug parameters release 21] to target\classes
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/model/Agente.java:[44,25] cannot access org.hibernate.query.BindableType
+  class file for org.hibernate.query.BindableType not found
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[33,98] cannot find symbol
+  symbol:   method getRol()
+  location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[36,24] cannot find symbol
+  symbol:   method getId()
+  location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[37,24] cannot find symbol
+  symbol:   method getEmail()
+  location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[38,24] cannot find symbol
+  symbol:   method getPassword()
+  location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[INFO] 5 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.801 s
+[INFO] Finished at: 2026-04-06T13:21:02+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project backend: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/model/Agente.java:[44,25] cannot access org.hibernate.query.BindableType
+[ERROR]   class file for org.hibernate.query.BindableType not found
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[33,98] cannot find symbol
+[ERROR]   symbol:   method getRol()
+[ERROR]   location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[36,24] cannot find symbol
+[ERROR]   symbol:   method getId()
+[ERROR]   location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[37,24] cannot find symbol
+[ERROR]   symbol:   method getEmail()
+[ERROR]   location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] /C:/Users/jorge/Desktop/tfg/java/backend/src/main/java/com/zzzacademy/backend/security/UserDetailsImpl.java:[38,24] cannot find symbol
+[ERROR]   symbol:   method getPassword()
+[ERROR]   location: variable usuario of type com.zzzacademy.backend.model.Usuario
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
