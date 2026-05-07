@@ -84,4 +84,20 @@ public class BuildController {
 
         return ResponseEntity.ok(new MessageResponse("¡Build de ZZZ Academy lista y guardada!"));
     }
+
+    @DeleteMapping("/{buildId}")
+    public ResponseEntity<?> deleteBuild(@PathVariable Long rosterId, @PathVariable Long buildId) {
+        Optional<UsuarioAgente> rosterOpt = checkRosterOwnership(rosterId);
+        if (rosterOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: El personaje indicado no pertenece a tu Roster."));
+        }
+        
+        Optional<UsuarioBuild> buildOpt = usuarioBuildRepository.findById(buildId);
+        if (buildOpt.isEmpty() || !buildOpt.get().getUsuarioAgente().getId().equals(rosterId)) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Build no encontrada en este personaje."));
+        }
+        
+        usuarioBuildRepository.delete(buildOpt.get());
+        return ResponseEntity.ok(new MessageResponse("Build eliminada correctamente de tu cuenta."));
+    }
 }

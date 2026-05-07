@@ -18,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -74,5 +75,19 @@ public class AuthController {
         usuarioRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("¡Usuario registrado con éxito en ZZZ Academy!"));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMe() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Usuario> usuarioOpt = usuarioRepository.findById(userDetails.getId());
+        
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Usuario no encontrado"));
+        }
+        
+        Usuario usuario = usuarioOpt.get();
+        // Devolvemos los datos del usuario para restaurar la sesión en el Frontend
+        return ResponseEntity.ok(new JwtResponse("", usuario.getId(), usuario.getEmail(), usuario.getRol().name()));
     }
 }

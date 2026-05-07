@@ -88,4 +88,30 @@ public class RosterController {
         
         return ResponseEntity.ok(new MessageResponse("Personaje eliminado del Roster."));
     }
+
+    // Ruta PUT para editar el progreso del héroe
+    @PutMapping("/{rosterId}")
+    public ResponseEntity<?> updateAgentInRoster(@PathVariable Long rosterId, @RequestBody java.util.Map<String, Object> updates) {
+        Usuario usuario = getAuthenticatedUser();
+        
+        Optional<UsuarioAgente> usuarioAgenteOpt = usuarioAgenteRepository.findByIdAndUsuario(rosterId, usuario);
+        if (usuarioAgenteOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Personaje no encontrado en tu Roster personal."));
+        }
+        
+        UsuarioAgente agenteRoster = usuarioAgenteOpt.get();
+        
+        if (updates.containsKey("nivel")) {
+            agenteRoster.setNivel((Integer) updates.get("nivel"));
+        }
+        if (updates.containsKey("nivelHabilidadCore")) {
+            agenteRoster.setNivelHabilidadCore((String) updates.get("nivelHabilidadCore"));
+        }
+        if (updates.containsKey("mindscapesDesbloqueados")) {
+            agenteRoster.setMindscapesDesbloqueados((Integer) updates.get("mindscapesDesbloqueados"));
+        }
+        
+        usuarioAgenteRepository.save(agenteRoster);
+        return ResponseEntity.ok(new MessageResponse("Personaje de tu roster actualizado (niveles/mindscapes)."));
+    }
 }
