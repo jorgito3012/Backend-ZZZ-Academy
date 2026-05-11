@@ -2,6 +2,9 @@ package com.zzzacademy.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.util.Map;
+import org.hibernate.annotations.Type;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 import com.zzzacademy.backend.model.enums.Rango;
 
@@ -21,14 +24,10 @@ public class Bangboo {
     @Column(nullable = false)
     private Rango rango;
 
-    @Column(columnDefinition = "TEXT")
-    private String descripcion;
-
-    @Column(name = "habilidad_activa", columnDefinition = "TEXT")
-    private String habilidadActiva;
-
-    @Column(name = "habilidad_pasiva", columnDefinition = "TEXT")
-    private String habilidadPasiva;
+    // Guardaremos las 3 habilidades (activa, adicional, cadena) en este JSON estructurado
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> habilidades;
 
     private String imagenUrl;
 }

@@ -2,6 +2,8 @@ package com.zzzacademy.backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import com.zzzacademy.backend.model.enums.Rango;
+import com.zzzacademy.backend.model.enums.Rol;
 
 @Data
 @Entity
@@ -13,13 +15,19 @@ public class WEngine {
     private Long id;
 
     private String nombre;
-    private String rareza; // S, A, B
-    private String especialidad; // Atacante, Aturdidor, Anomalía...
+
+    @Enumerated(EnumType.STRING)
+    private Rango rareza;
+
+    @Enumerated(EnumType.STRING)
+    private Rol especialidad;
 
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     private String statPrincipal; // Ej: "ATK%", "Prob. CRIT"
+    
+    private Integer ataqueBase; // Ej: 713 (Nv. 60)
     
     private String imagenUrl;
 }

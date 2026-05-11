@@ -56,7 +56,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/agents/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
-                        .anyRequest().authenticated());
+                        // Exponemos las imágenes locales al mundo entero
+            .requestMatchers("/uploads/**").permitAll()
+            
+            // Proteger las rutas de administración (Solo puede entrar alguien con rol ADMIN)
+            .requestMatchers("/api/admin/**").hasRole("ADMIN")
+            
+            // Proteger todo lo demás
+            .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
 
