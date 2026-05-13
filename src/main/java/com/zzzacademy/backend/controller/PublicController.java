@@ -37,6 +37,13 @@ public class PublicController {
         return ResponseEntity.ok(agenteRepository.findAll());
     }
 
+    @GetMapping("/agents/{id}")
+    public ResponseEntity<Agente> getAgentById(@org.springframework.web.bind.annotation.PathVariable Long id) {
+        return agenteRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/wengines")
     public ResponseEntity<List<WEngine>> getAllWEngines() {
         return ResponseEntity.ok(wEngineRepository.findAll());

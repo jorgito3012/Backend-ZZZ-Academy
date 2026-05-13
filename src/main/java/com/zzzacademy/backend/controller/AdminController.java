@@ -62,6 +62,16 @@ public class AdminController {
         return ResponseEntity.ok(savedAgente);
     }
 
+    @PutMapping("/agentes/{id}")
+    public ResponseEntity<Agente> updateAgente(@PathVariable Long id, @RequestBody Agente agente) {
+        return agenteRepository.findById(id)
+                .map(existingAgent -> {
+                    agente.setId(id);
+                    return ResponseEntity.ok(agenteRepository.save(agente));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // 3. CREACIÓN DE NUEVOS W-ENGINES
     @PostMapping("/wengines")
     public ResponseEntity<WEngine> createWEngine(@RequestBody WEngine wengine) {

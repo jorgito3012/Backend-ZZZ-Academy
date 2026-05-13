@@ -36,6 +36,8 @@ public class Agente {
 
     private String imagenUrl;
 
+    private String tier; // S, A, B, etc.
+
     // ==========================================
     // --- MAGIA JSONB (Datos anidados) ---
     // ==========================================
