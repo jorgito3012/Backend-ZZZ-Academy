@@ -66,7 +66,6 @@ public class RosterController {
         nuevoPersonaje.setUsuario(usuario);
         nuevoPersonaje.setAgente(agente);
         nuevoPersonaje.setNivel(1);
-        nuevoPersonaje.setNivelHabilidadCore("A");
         nuevoPersonaje.setMindscapesDesbloqueados(0);
 
         usuarioAgenteRepository.save(nuevoPersonaje);
@@ -103,9 +102,6 @@ public class RosterController {
         
         if (updates.containsKey("nivel")) {
             agenteRoster.setNivel((Integer) updates.get("nivel"));
-        }
-        if (updates.containsKey("nivelHabilidadCore")) {
-            agenteRoster.setNivelHabilidadCore((String) updates.get("nivelHabilidadCore"));
         }
         if (updates.containsKey("mindscapesDesbloqueados")) {
             agenteRoster.setMindscapesDesbloqueados((Integer) updates.get("mindscapesDesbloqueados"));

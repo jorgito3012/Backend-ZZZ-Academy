@@ -4,6 +4,7 @@ import com.zzzacademy.backend.dto.JwtResponse;
 import com.zzzacademy.backend.dto.LoginRequest;
 import com.zzzacademy.backend.dto.MessageResponse;
 import com.zzzacademy.backend.dto.RegisterRequest;
+import com.zzzacademy.backend.dto.UsuarioDto;
 import com.zzzacademy.backend.model.Usuario;
 import com.zzzacademy.backend.repository.UsuarioRepository;
 import com.zzzacademy.backend.security.JwtTokenProvider;
@@ -79,7 +80,13 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getMe() {
-        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            return ResponseEntity.status(401).body(new MessageResponse("No autorizado"));
+        }
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(userDetails.getId());
         
         if (usuarioOpt.isEmpty()) {
@@ -87,7 +94,6 @@ public class AuthController {
         }
         
         Usuario usuario = usuarioOpt.get();
-        // Devolvemos los datos del usuario para restaurar la sesión en el Frontend
-        return ResponseEntity.ok(new JwtResponse("", usuario.getId(), usuario.getEmail(), usuario.getRol().name()));
+        return ResponseEntity.ok(new UsuarioDto(usuario.getId(), usuario.getEmail(), usuario.getRol(), usuario.getFechaCreacion()));
     }
 }

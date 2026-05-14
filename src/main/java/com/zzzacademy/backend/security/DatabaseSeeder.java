@@ -35,6 +35,17 @@ public class DatabaseSeeder implements CommandLineRunner {
             System.out.println("Email: admin@zzzacademy.com");
             System.out.println("Password: admin123");
             System.out.println("========================================================");
+        } else {
+            // Si ya existe, asegurarse de que sigue siendo ADMIN
+            usuarioRepository.findByEmail("admin@zzzacademy.com").ifPresent(admin -> {
+                if (admin.getRol() != RolUsuario.ADMIN) {
+                    admin.setRol(RolUsuario.ADMIN);
+                    usuarioRepository.save(admin);
+                    System.out.println("========================================================");
+                    System.out.println("ROL DE ADMINISTRADOR RESTAURADO PARA: admin@zzzacademy.com");
+                    System.out.println("========================================================");
+                }
+            });
         }
     }
 }

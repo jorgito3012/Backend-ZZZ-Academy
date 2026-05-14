@@ -25,8 +25,5 @@ public class UsuarioAgente {
     // El progreso del personaje guardado por el jugador
     private Integer nivel = 1;
 
-    @Column(name = "nivel_habilidad_core")
-    private String nivelHabilidadCore = "A";
-
     private Integer mindscapesDesbloqueados = 0;
 }

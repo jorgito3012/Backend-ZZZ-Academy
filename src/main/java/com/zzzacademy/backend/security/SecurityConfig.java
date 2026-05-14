@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
 
 @Configuration
 @EnableMethodSecurity
@@ -49,17 +50,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        http.cors(org.springframework.security.config.Customizer.withDefaults())
-                .csrf(org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer::disable)
+        http.cors(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable()) // Stateless API
+                .headers(headers -> headers
+                    .frameOptions(frame -> frame.deny()) // Prevenir Clickjacking
+                    .contentTypeOptions(Customizer.withDefaults()) // Prevenir MIME sniffing
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/agents/**").permitAll()
                         .requestMatchers("/api/public/**").permitAll()
-                        // Exponemos las imágenes locales al mundo entero
+                        // Exponemos las imágenes locales
             .requestMatchers("/uploads/**").permitAll()
             
-            // Proteger las rutas de administración (Solo puede entrar alguien con rol ADMIN)
+            // Proteger las rutas de administración
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
             
             // Proteger todo lo demás

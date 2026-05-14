@@ -4,10 +4,17 @@ import com.zzzacademy.backend.model.Agente;
 import com.zzzacademy.backend.model.WEngine;
 import com.zzzacademy.backend.model.DiscoSet;
 import com.zzzacademy.backend.model.Bangboo;
+import com.zzzacademy.backend.model.enums.RolUsuario;
+import com.zzzacademy.backend.dto.UsuarioDto;
+import com.zzzacademy.backend.security.UserDetailsImpl;
+import org.springframework.security.core.context.SecurityContextHolder;
+import java.util.List;
+import java.util.stream.Collectors;
 import com.zzzacademy.backend.repository.AgenteRepository;
 import com.zzzacademy.backend.repository.WEngineRepository;
 import com.zzzacademy.backend.repository.DiscoSetRepository;
 import com.zzzacademy.backend.repository.BangbooRepository;
+import com.zzzacademy.backend.repository.UsuarioRepository;
 import com.zzzacademy.backend.service.FileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +43,9 @@ public class AdminController {
 
     @Autowired
     private BangbooRepository bangbooRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     // 1. SUBIDA DE IMÁGENES
     @PostMapping("/upload-image")
@@ -91,5 +101,45 @@ public class AdminController {
     public ResponseEntity<Bangboo> createBangboo(@RequestBody Bangboo bangboo) {
         Bangboo savedBangboo = bangbooRepository.save(bangboo);
         return ResponseEntity.ok(savedBangboo);
+    }
+
+    // 6. GESTIÓN DE USUARIOS
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<UsuarioDto>> getAllUsers() {
+        List<UsuarioDto> users = usuarioRepository.findAll().stream()
+                .map(user -> new UsuarioDto(user.getId(), user.getEmail(), user.getRol(), user.getFechaCreacion()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
+    }
+
+    @PutMapping("/usuarios/{id}/rol")
+    public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> roleData) {
+        UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        if (currentUser.getId().equals(id)) {
+            return ResponseEntity.badRequest().body("No puedes cambiar tu propio rol de administrador.");
+        }
+
+        String newRole = roleData.get("rol");
+        return usuarioRepository.findById(id)
+                .map(user -> {
+                    user.setRol(RolUsuario.valueOf(newRole));
+                    usuarioRepository.save(user);
+                    return ResponseEntity.ok(new UsuarioDto(user.getId(), user.getEmail(), user.getRol(), user.getFechaCreacion()));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/usuarios/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+        UserDetailsImpl currentUser = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        
+        if (currentUser.getId().equals(id)) {
+            return ResponseEntity.badRequest().body("No puedes eliminar tu propia cuenta.");
+        }
+
+        if (!usuarioRepository.existsById(id)) return ResponseEntity.notFound().build();
+        usuarioRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

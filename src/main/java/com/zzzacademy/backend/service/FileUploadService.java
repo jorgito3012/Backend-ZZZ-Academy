@@ -10,6 +10,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.UUID;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class FileUploadService {
@@ -34,6 +36,13 @@ public class FileUploadService {
             // Check if the file's name contains invalid characters
             if (originalFileName.contains("..")) {
                 throw new RuntimeException("Lo siento! El nombre de archivo contiene una ruta inválida " + originalFileName);
+            }
+
+            // Validar tipo de archivo (MIME Type)
+            String contentType = file.getContentType();
+            List<String> allowedTypes = Arrays.asList("image/jpeg", "image/png", "image/webp", "image/gif");
+            if (contentType == null || !allowedTypes.contains(contentType.toLowerCase())) {
+                throw new RuntimeException("Tipo de archivo no permitido. Solo se admiten imágenes (JPG, PNG, WEBP, GIF).");
             }
 
             // Generamos un nombre único para evitar sobreescribir imágenes con el mismo nombre
