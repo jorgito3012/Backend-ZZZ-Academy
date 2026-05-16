@@ -77,4 +77,25 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    @Bean
+    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+        org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
+        
+        // Aquí es donde añadimos tus dominios permitidos
+        configuration.setAllowedOrigins(java.util.Arrays.asList(
+            "http://zzzacademy.es", 
+            "http://www.zzzacademy.es", 
+            "http://167.86.120.170",
+            "http://localhost:4200"
+        ));
+        
+        configuration.setAllowedMethods(java.util.Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(java.util.Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setAllowCredentials(true);
+
+        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
